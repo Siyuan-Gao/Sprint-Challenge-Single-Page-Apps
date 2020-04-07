@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import axios from 'axios';
 import CharacterCard from './CharacterCard';
+import {Route} from "react-router-dom";
 
 
-export default function SearchForm(searchTerms, handleChange) {
+
+export default function SearchForm(searchTerms) {
 
   const [favChar, setFavChar] = useState([]);
   const [charTerms, setCharTerm] = useState('');
-  const [charResults, setCharResults] = useState(favChar)
+  const [charResults, setCharResults] = useState([])
 
   const formChange = event => {
+    event.preventDefault();
     setCharTerm(event.target.value);
   }
 
@@ -59,7 +62,7 @@ export default function SearchForm(searchTerms, handleChange) {
           type="text"
           name="textfield"
           placeholder="search"
-          onChange={handleChange, formChange}
+          onChange={formChange}
           value={searchTerms}
         />
 
