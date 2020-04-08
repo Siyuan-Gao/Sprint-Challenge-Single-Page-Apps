@@ -1,24 +1,20 @@
-import React, { useEffect,useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import CharacterCard from './CharacterCard';
-import {Route} from "react-router-dom";
 
-
-
-export default function SearchForm(searchTerms) {
-
+export default function SearchForm({ searchTerms, handleChange }) {
   const [favChar, setFavChar] = useState([]);
   const [charTerms, setCharTerm] = useState('');
-  const [charResults, setCharResults] = useState([])
+  const [charResults, setCharResults] = useState(favChar)
 
   const formChange = event => {
-    event.preventDefault();
     setCharTerm(event.target.value);
   }
 
 
   useEffect(() => {
-   
+    // TODO: Add API Request here - must run in `useEffect`
+    //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
     const newCharacters = () => {
       axios
         .get('https://rickandmortyapi.com/api/character/')
@@ -41,18 +37,11 @@ export default function SearchForm(searchTerms) {
   }, [charTerms]);
 
 
-
   return (
-    <section className="search-form">
+    <section className='search-form'>
 
       {charResults.map(char => (
-        <CharacterCard
-          url={char.image}
-          names={char.name}
-          gender={char.gender}
-          local={char.location.name}
-          species={char.species.name}
-          status={char.status} />
+        <CharacterCard url={char.image} names={char.name} gender={char.gender} local={char.location.name} species={char.species.name} status={char.status} />
       ))}
 
       <form >
@@ -62,10 +51,11 @@ export default function SearchForm(searchTerms) {
           type="text"
           name="textfield"
           placeholder="search"
-          onChange={formChange}
+          onChange={handleChange, formChange}
           value={searchTerms}
         />
 
-      </form>    </section>
-  );
+      </form>
+    </section>
+  )
 }
